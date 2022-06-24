@@ -6,8 +6,10 @@
 <title>タイトル</title> 
 </head> 
 <body> 
-<form method="post" th:action="@{/user/mail}" th:object="${forResisterForm}">
-<span th:errors="*{mail}"></span><br>
+<form method="post" th:action="@{/forresister/mail}">
+<div th:errors="${forResisterForm.urlTimeError}"></div>
+<div th:if="${urlError != null}" th:text = "${urlError}"></div>
+<div th:errors="${forResisterForm.mail}"></div>
 メールアドレス：&nbsp;<input type="text" name="mail"><br>
 <button>送信</button>
 </form>

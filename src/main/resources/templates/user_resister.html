@@ -1,0 +1,36 @@
+<!DOCTYPE html> 
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+<!-- ヘッド要素 --> 
+<meta charset="UTF-8"> 
+<title>タイトル</title> 
+</head> 
+<body> 
+<form method="post" th:action="@{/user/forcomplete}">
+<div th:errors="${userForm.name}"></div>
+名前：&nbsp;<input type="text" name="name" th:field="${userForm.name}"><br>
+
+<div th:errors="${userForm.hurigana}"></div>
+ふりがな：&nbsp;<input type="text" name="hurigana" th:field="${userForm.hurigana}"><br>
+
+<div th:errors="${userForm.zipCode}"></div>
+郵便番号：&nbsp;<input type="text" name="zipCode" th:field="${userForm.zipCode}"><br>
+
+<div th:errors="${userForm.address}"></div>
+住所：&nbsp;<input type="text" name="address" th:field="${userForm.address}"><br>
+
+<div th:errors="${userForm.tel}"></div>
+電話番号：&nbsp;<input type="text" name="tel" th:field="${userForm.tel}"><br>
+
+<div th:errors="${userForm.password}"></div>
+パスワード：&nbsp;<input type="password" name="password"><br>
+
+<div th:errors="${userForm.confirm}"></div>
+確認パスワード：&nbsp;<input type="password" name="confirm"><br>
+<button>登録</button>
+
+</form>
+
+
+</body> 
+</html>

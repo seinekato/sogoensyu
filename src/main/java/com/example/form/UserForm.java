@@ -1,14 +1,38 @@
 package com.example.form;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class UserForm {
+	@NotBlank(message = "名前を入力してください")
+	@Size(min = 1, max = 20, message = "名前は20文字までで入力してください")
 	private String name;
+	
+	@NotBlank(message = "ふりがなを入力してください")
+	@Size(min = 1, max = 20, message = "ふりがなは20文字までで入力してください")
+	@Pattern(regexp = "^[\\u3040-\\u309F]+$",message="ひらがなで入力してください")
 	private String hurigana;
-	private String code;
+	
+	@NotBlank(message = "郵便番号を入力してください")
+	@Pattern(regexp = "^[0-9]{3}-[0-9]{4}$", message = "郵便番号はXXX-XXXXの形式で入力してください")
+	private String zipCode;
+
+	@NotBlank(message = "住所を入力してください")
+	@Size(min = 1, max = 50, message = "住所は50文字までで入力してください")
 	private String address;
+
+	@NotBlank(message = "電話番号を入力してください")
+	@Pattern(regexp = "^[0-9]{2,4}-[0-9]{2,4}-[0-9]{4}$", message = "携帯番号又は固定番号をハイフンを含め入力してください")
 	private String tel;
+
+	@NotBlank(message = "パスワードを入力してください")
+	@Size(min = 1, max = 20, message = "パスワードは20文字までで入力してください")
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "パスワードは半角英数で入力してください")
 	private String password;
+
+	@NotBlank(message = "確認パスワードを入力してください")
 	private String confirm;
-	private String mail;
 
 	public String getName() {
 		return name;
@@ -26,12 +50,12 @@ public class UserForm {
 		this.hurigana = hurigana;
 	}
 
-	public String getCode() {
-		return code;
+	public String getZipCode() {
+		return zipCode;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setZipCode(String code) {
+		this.zipCode = code;
 	}
 
 	public String getAddress() {
@@ -66,18 +90,11 @@ public class UserForm {
 		this.confirm = confirm;
 	}
 
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
 
 	@Override
 	public String toString() {
-		return "UserForm [name=" + name + ", hurigana=" + hurigana + ", code=" + code + ", address=" + address
-				+ ", tel=" + tel + ", password=" + password + ", confirm=" + confirm + ", mail=" + mail + "]";
+		return "UserForm [name=" + name + ", hurigana=" + hurigana + ", code=" + zipCode + ", address=" + address
+				+ ", tel=" + tel + ", password=" + password + ", confirm=" + confirm + "]";
 	}
 
 }

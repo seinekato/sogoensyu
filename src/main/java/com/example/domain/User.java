@@ -1,20 +1,29 @@
 package com.example.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class User {
+	private Integer id;
 	private String name;
 	private String hurigana;
-	private String code;
+	private String zipCode;
 	private String address;
 	private String tel;
 	private String password;
 	private String mail;
-	private String resisterUser;
-	private Date resisterDate;
-	private String updateUser;
-	private Date updateDate;
-	private boolean delete;
+	private Integer resisterUser;
+	private LocalDateTime resisterDateTime;
+	private Integer updateUser;
+	private LocalDateTime updateDateTime;
+	private boolean deleteflag;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -27,11 +36,13 @@ public class User {
 	public void setHurigana(String hurigana) {
 		this.hurigana = hurigana;
 	}
-	public String getCode() {
-		return code;
+
+	public String getZipCode() {
+		return zipCode;
 	}
-	public void setCode(String code) {
-		this.code = code;
+
+	public void setZipCode(String code) {
+		this.zipCode = code;
 	}
 	public String getAddress() {
 		return address;
@@ -57,57 +68,43 @@ public class User {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-
-	public String getResisterUser() {
+	public Integer getResisterUser() {
 		return resisterUser;
 	}
-
-	public void setResisterUser(String resisterUser) {
+	public void setResisterUser(Integer resisterUser) {
 		this.resisterUser = resisterUser;
 	}
-
-	public Date getResisterDate() {
-		return resisterDate;
+	public LocalDateTime getResisterDateTime() {
+		return resisterDateTime;
 	}
-
-	public void setResisterDate(Date resisterDate) {
-		this.resisterDate = resisterDate;
+	public void setResisterDateTime(LocalDateTime resisterDateTime) {
+		this.resisterDateTime = resisterDateTime;
 	}
-
-	public String getUpdateUser() {
+	public Integer getUpdateUser() {
 		return updateUser;
 	}
-
-	public void setUpdateUser(String updateUser) {
+	public void setUpdateUser(Integer updateUser) {
 		this.updateUser = updateUser;
 	}
-
-	public Date getUpdateDate() {
-		return updateDate;
+	public LocalDateTime getUpdateDateTime() {
+		return updateDateTime;
 	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdateDateTime(LocalDateTime updateDateTime) {
+		this.updateDateTime = updateDateTime;
 	}
-
-	public boolean isDelete() {
-		return delete;
+	public boolean isDeleteflag() {
+		return deleteflag;
 	}
-
-	public void setDelete(boolean delete) {
-		this.delete = delete;
+	public void setDeleteflag(boolean deleteflag) {
+		this.deleteflag = deleteflag;
 	}
-
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", hurigana=" + hurigana + ", code=" + code + ", address=" + address + ", tel="
-				+ tel + ", password=" + password + ", mail=" + mail + ", resisterUser=" + resisterUser
-				+ ", resisterDate=" + resisterDate + ", updateUser=" + updateUser + ", updateDate=" + updateDate
-				+ ", delete=" + delete + "]";
+		return "User [id=" + id + ", name=" + name + ", hurigana=" + hurigana + ", code=" + zipCode + ", address="
+				+ address + ", tel=" + tel + ", password=" + password + ", mail=" + mail + ", resisterUser="
+				+ resisterUser + ", resisterDateTime=" + resisterDateTime + ", updateUser=" + updateUser
+				+ ", updateDateTime=" + updateDateTime + ", deleteflag=" + deleteflag + "]";
 	}
-
-
-
 
 	}
 
