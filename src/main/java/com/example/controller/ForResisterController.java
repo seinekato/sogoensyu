@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,11 +58,13 @@ public class ForResisterController {
 //		forResister経由済み　　まずnullあるないで判断しなければnullPointerに
 		if (forResister != null) {
 		LocalDateTime nowDatetime = LocalDateTime.now();
-		Duration duration = Duration.between(nowDatetime, forResister.getResisterDateTime());
+//		Duration duration = Duration.between(nowDatetime, forResister.getResisterDateTime());
+		long localDiffDays = ChronoUnit.SECONDS.between(forResister.getResisterDateTime(), nowDatetime);
+		Long oneDayTime = 86400L;
 
 
 //　　　　　24時間以内
-		if (duration.toHours() <= 24) {
+		if (localDiffDays < oneDayTime) {
 			result.rejectValue("urlTimeError", null, "有効期限内の本登録用メールが存在します。送信済みメールの本登録URLからご登録ください");
 			return "user_request";
 		} else {

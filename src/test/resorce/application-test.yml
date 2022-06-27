@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/sogoensyu-test
+    username: postgres
+    password: postgres
+  sql:
+    init:
+      mode: always
+  mail:
+    host: localhost
+    port: 1025
+server:
+  servlet:
+    context-path: /sogoensyu

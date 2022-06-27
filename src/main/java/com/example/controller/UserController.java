@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.servlet.http.HttpSession;
 
@@ -41,8 +41,9 @@ public class UserController {
 			return "forward:/forresister";
 		}
 		LocalDateTime nowDatetime = LocalDateTime.now();
-		Duration duration = Duration.between(nowDatetime, forResister.getResisterDateTime());
-		if (duration.toHours() <= 24) {
+		long localDiffDays = ChronoUnit.SECONDS.between(forResister.getResisterDateTime(), nowDatetime);
+		Long oneDayTime = 86400L;
+		if (localDiffDays < oneDayTime) {
 			session.setAttribute("key", key);
 			return "user_resister";
 		} else {
