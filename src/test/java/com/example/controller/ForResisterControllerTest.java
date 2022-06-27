@@ -6,6 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +36,8 @@ import com.example.util.XlsDataSetLoader;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +50,12 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 
 @ActiveProfiles("test")
 class ForResisterControllerTest {
+	private AutoCloseable closeable;
+	private static final UUID uuid = UUID.fromString("$2a$10$57o8HGavMZY6TbfCkkU.S.5OnyPLBVW8AcuA2T4LnY.01fyagmtn6");
+	private static final LocalDateTime datetime = LocalDateTime.of(2022, 6, 27, 18, 0, 0, 0);
 
+	@InjectMocks
+	private ForResisterController forResisterController;
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -59,10 +73,17 @@ class ForResisterControllerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		closeable = MockitoAnnotations.openMocks(this);
+		MockedStatic<UUID> mock = Mockito.mockStatic(UUID.class);
+		mock.when(UUID::randomUUID).thenReturn(uuid);
+		MockedStatic<LocalDateTime> mock2 = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS);
+		mock2.when(LocalDateTime::now).thenReturn(datetime);
+
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		closeable.close();
 	}
 
 	@Test
@@ -103,7 +124,7 @@ class ForResisterControllerTest {
 	@Test
 	@DisplayName("/mail forresister!=null,duration24以上　user==null")
 	@DatabaseSetup("classpath:forresister2.xlsx")
-//	@ExpectedDatabase(value = "classpath:forresister_expect1.xlsx", assertionMode = DatabaseAssertionMode.NON_STRICT)
+	@ExpectedDatabase(value = "classpath:expect1.xlsx", assertionMode = DatabaseAssertionMode.NON_STRICT)
 //	。★keyが新しいもの、日時も新しくなっていることを確認！！！
 	void test5() throws Exception {
 		mockMvc.perform(post("/forresister/mail").param("mail", "seine.kato@rakus-partners.co.jp"))
