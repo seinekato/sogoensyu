@@ -31,8 +31,6 @@ import com.example.util.XlsDataSetLoader;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 
 /**
  * @author seine
@@ -146,15 +144,14 @@ class UserControllerTest {
 	@Test
 	@DisplayName("/forcomplete ユーザー登録テスト")
 	@DatabaseSetup("classpath:forresister6.xlsx")
-	@ExpectedDatabase(value = "classpath:expect2.xlsx", assertionMode = DatabaseAssertionMode.NON_STRICT)
-//	★登録日付など
+//	@ExpectedDatabase(value = "classpath:expect2.xlsx", assertionMode = DatabaseAssertionMode.NON_STRICT)
 	void test7() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(post("/user/forcomplete").param("name", "加藤").param("hurigana", "かとう")
 				.param("zipCode", "111-1111").param("address", "テスト町").param("tel", "111-1111-1111")
 				.param("password", "aaaa").param("confirm", "aaaa").sessionAttr("key", "aaaaa"))
 				.andExpect(view().name("redirect:/user/complete")).andReturn();
 
-//		★users日付,passwordエンコーダー分
+//		★users日付,passwordエンコーダー分インサート、forresister日付更新
 	}
 
 }
