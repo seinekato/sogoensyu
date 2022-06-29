@@ -24,6 +24,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,6 +32,8 @@ import com.example.util.XlsDataSetLoader;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 
 /**
  * @author seine
@@ -136,20 +139,26 @@ class UserControllerTest {
 	@Test
 	@DisplayName("/forcomplete バリデーションテスト 確認パスワード")
 	void test6() throws Exception {
-		mockMvc.perform(post("/user/forcomplete").param("name", "加藤").param("hurigana", "かとう")
+		MvcResult mvcResult = mockMvc.perform(post("/user/forcomplete").param("name", "加藤").param("hurigana", "かとう")
 				.param("zipCode", "111-1111").param("address", "テスト町").param("tel", "000-0000-0000")
-				.param("password", "aiueo").param("confirm", "oeuia")).andExpect(view().name("user_resister"));
+				.param("password", "aiueo").param("confirm", "oeuia")).andExpect(view().name("user_resister"))
+				.andReturn();
+
+		BindingResult bindResult = (BindingResult) mvcResult.getModelAndView().getModel()
+				.get(BindingResult.MODEL_KEY_PREFIX + "userForm");
+		String msg = bindResult.getFieldError().getDefaultMessage();
+		assertEquals("確認パスワードとパスワードが一致しません", msg);
 	}
 
 	@Test
 	@DisplayName("/forcomplete ユーザー登録テスト")
 	@DatabaseSetup("classpath:forresister6.xlsx")
-//	@ExpectedDatabase(value = "classpath:expect2.xlsx", assertionMode = DatabaseAssertionMode.NON_STRICT)
+	@ExpectedDatabase(value = "classpath:expect3.xlsx", assertionMode = DatabaseAssertionMode.NON_STRICT)
 	void test7() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(post("/user/forcomplete").param("name", "加藤").param("hurigana", "かとう")
+		mockMvc.perform(post("/user/forcomplete").param("name", "加藤").param("hurigana", "かとう")
 				.param("zipCode", "111-1111").param("address", "テスト町").param("tel", "111-1111-1111")
 				.param("password", "aaaa").param("confirm", "aaaa").sessionAttr("key", "aaaaa"))
-				.andExpect(view().name("redirect:/user/complete")).andReturn();
+				.andExpect(view().name("redirect:/user/complete"));
 
 //		★users日付,passwordエンコーダー分インサート、forresister日付更新
 	}

@@ -6,12 +6,12 @@ import javax.validation.constraints.Size;
 
 public class UserForm {
 	@NotBlank(message = "名前を入力してください")
-	@Size(min = 1, max = 20, message = "名前は20文字までで入力してください")
+	@Size(min = 0, max = 20, message = "名前は20文字までで入力してください")
 	private String name;
 	
 	@NotBlank(message = "ふりがなを入力してください")
-	@Size(min = 1, max = 20, message = "ふりがなは20文字までで入力してください")
-	@Pattern(regexp = "^[\\u3040-\\u309F]+$",message="ひらがなで入力してください")
+	@Size(min = 0, max = 20, message = "ふりがなは20文字までで入力してください")
+	@Pattern(regexp = "^[\\u3040-\\u309F]*$", message = "ひらがなで入力してください")
 	private String hurigana;
 	
 	@NotBlank(message = "郵便番号を入力してください")
@@ -19,16 +19,16 @@ public class UserForm {
 	private String zipCode;
 
 	@NotBlank(message = "住所を入力してください")
-	@Size(min = 1, max = 50, message = "住所は50文字までで入力してください")
+	@Size(min = 0, max = 50, message = "住所は50文字までで入力してください")
 	private String address;
 
 	@NotBlank(message = "電話番号を入力してください")
-	@Pattern(regexp = "^[0-9]{2,4}-[0-9]{2,4}-[0-9]{4}$", message = "携帯番号又は固定番号をハイフンを含め入力してください")
+	@Pattern(regexp = "^[0-9]{2,4}-[0-9]{2,4}-[0-9]{4}$", message = "ハイフンを含む電話形式で入力してください")
 	private String tel;
 
 	@NotBlank(message = "パスワードを入力してください")
-	@Size(min = 1, max = 20, message = "パスワードは20文字までで入力してください")
-	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "パスワードは半角英数で入力してください")
+	@Size(min = 0, max = 20, message = "パスワードは20文字までで入力してください")
+	@Pattern(regexp = "^[A-Za-z0-9]*$", message = "パスワードは半角英数で入力してください")
 	private String password;
 
 	@NotBlank(message = "確認パスワードを入力してください")

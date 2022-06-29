@@ -6,12 +6,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,9 +30,12 @@ import com.example.util.XlsDataSetLoader;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 
 
 //@ExtendWith(MockitoExtension.class)
+@PrepareForTest(UUID.class)
 @SpringBootTest
 @DbUnitConfiguration(dataSetLoader = XlsDataSetLoader.class)
 
@@ -41,6 +47,9 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 @ActiveProfiles("test")
 class ForResisterControllerTest {
 //	private AutoCloseable closeable;
+
+//	@Mock
+//	private UUID uuid;
 
 //	@InjectMocks
 //	private ForResisterController forResisterController;
@@ -64,8 +73,21 @@ class ForResisterControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 //		closeable = MockitoAnnotations.openMocks(this);
 
+//		var uuidstring = "$2a$10$57o8HGavMZY6TbfCkkU.S.5OnyPLBVW8AcuA2T4LnY.01fyagmtn6";
+//		try (MockedStatic<UUID> mocked = Mockito.mockStatic(UUID.class, Mockito.CALLS_REAL_METHODS)) {
+//			mocked.when(() -> UUID.randomUUID()).thenReturn(uuidstring);
+//		}
+//
+//		var datetime = LocalDateTime.of(2022, 6, 27, 18, 0, 0, 0);
+
+//		MockedStatic<LocalDateTime> mock2 = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS);
+//		mock2.when(LocalDateTime::now).thenReturn(datetime);
+//
+//		mock.close();
+//		mock2.close();
 
 	}
+
 
 	@AfterEach
 	void tearDown() throws Exception {
@@ -116,17 +138,7 @@ class ForResisterControllerTest {
 		mockMvc.perform(post("/forresister/mail").param("mail", "seine.kato@rakus-partners.co.jp"))
 				.andExpect(view().name("redirect:/forresister/sent")).andReturn();
 
-//		var uuid = UUID.fromString("$2a$10$57o8HGavMZY6TbfCkkU.S.5OnyPLBVW8AcuA2T4LnY.01fyagmtn6");
-//		MockedStatic<UUID> mock = Mockito.mockStatic(UUID.class);
-//		mock.when(UUID::randomUUID).thenReturn(uuid);
-//
-//		var datetime = LocalDateTime.of(2022, 6, 27, 18, 0, 0, 0);
 
-//		MockedStatic<LocalDateTime> mock2 = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS);
-//		mock2.when(LocalDateTime::now).thenReturn(datetime);
-//
-//		mock.close();
-//		mock2.close();
 	}
 
 	@Test
@@ -139,10 +151,11 @@ class ForResisterControllerTest {
 	
 	@Test
 	@DisplayName("/mail forresister==null user==null")
+	@ExpectedDatabase(value = "classpath:expect2.xlsx", assertionMode = DatabaseAssertionMode.NON_STRICT)
 	void test7() throws Exception {
 		mockMvc.perform(post("/forresister/mail").param("mail", "seine.kato@rakus-partners.co.jp"))
 				.andExpect(view().name("redirect:/forresister/sent"));
-//		★メール送信、データベースインサート
+//		★メール送信
 	}
 
 	@Test
